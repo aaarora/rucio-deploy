@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    k8s-app: mysql
+  name: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      k8s-app: mysql
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        k8s-app: mysql
+    spec:
+      containers:
+      - name: mysql
+        image: mysql:5
+        imagePullPolicy: Always
+        env:
+        - name: MYSQL_USER
+          value: fts
+        - name: MYSQL_DATABASE
+          value: fts
+        - name: MYSQL_PASSWORD
+          value: fts
+        - name: MYSQL_ROOT_PASSWORD
+          value: fts
+        ports:
+        - containerPort: 80
+        resources:
+          limits:
+            cpu: 2
+            memory: 4Gi
+          requests:
+            cpu: 1
+            memory: 2Gi
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      terminationGracePeriodSeconds: 30

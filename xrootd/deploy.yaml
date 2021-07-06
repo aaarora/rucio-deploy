@@ -1,0 +1,92 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    k8s-app: xrootd-server
+  name: xrootd-server
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      k8s-app: xrootd-server
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        k8s-app: xrootd-server
+    spec:
+      containers:
+      - env:
+        - name: OSG_FQDN
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        image: aaarora/gc-500gbps:latest
+        imagePullPolicy: Always
+        name: xrootd-server
+        resources:
+          limits:
+            cpu: 8
+            memory: 20Gi
+          requests:
+            cpu: 7
+            memory: 19Gi
+        volumeMounts:
+        - mountPath: /mnt/ramdisk/
+          name: cache-vol
+        - mountPath: /etc/xrootd/xrootd-third-party-copy.cfg
+          name: xrootd-server-conf
+          subPath: xrootd-third-party-copy.cfg
+        - mountPath: /etc/xrootd/auth-file-noauth
+          name: xrootd-server-conf
+          subPath: auth-file-noauth
+        - mountPath: /etc/supervisord.d/10-xrootd.conf
+          name: xrootd-server-supervisor
+          subPath: supervisord.conf
+        - mountPath: /etc/pki/CA/private/OSG-Test-CA.key
+          name: ca
+          subPath: OSG-Test-CA.pem
+        - mountPath: /usr/lib/python2.7/site-packages/cagen.py
+          name: cagen
+          subPath: cagen.py
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: cache-vol
+        emptyDir:
+          medium: Memory
+          sizeLimit: 15Gi
+      - name: ca
+        secret:
+          secretName: https-self-certs
+          items:
+          - key: OSG-Test-CA.pem
+            path: OSG-Test-CA.pem
+          defaultMode: 0644
+      - name: cagen
+        configMap:
+          name: cert-script
+          items:
+          - key: cagen.py
+            path: cagen.py
+      - name: xrootd-server-conf
+        configMap: 
+          name: xrootd-server-conf
+          items:
+          - key: xrootd-third-party-copy.cfg
+            path: xrootd-third-party-copy.cfg
+          - key: auth-file-noauth
+            path: auth-file-noauth
+      - name: xrootd-server-supervisor
+        configMap: 
+          name: xrootd-server-supervisor
+          items:
+          - key: supervisord.conf
+            path: supervisord.conf
