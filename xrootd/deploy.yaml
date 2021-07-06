@@ -25,19 +25,23 @@ spec:
         - name: OSG_FQDN
           valueFrom:
             fieldRef:
-              fieldPath: status.podIP
+              #fieldPath: status.podIP
+              fieldPath: spec.nodeName
         image: aaarora/gc-500gbps:latest
         imagePullPolicy: Always
         name: xrootd-server
+        ports:
+        - containerPort: 1094
+          hostPort: 1094
         resources:
           limits:
-            cpu: 8
-            memory: 20Gi
+            cpu: 100
+            memory: 100Gi
           requests:
-            cpu: 7
-            memory: 19Gi
+            cpu: 4
+            memory: 6Gi
         volumeMounts:
-        - mountPath: /mnt/ramdisk/
+        - mountPath: /rucio/
           name: cache-vol
         - mountPath: /etc/xrootd/xrootd-third-party-copy.cfg
           name: xrootd-server-conf
@@ -62,7 +66,7 @@ spec:
       - name: cache-vol
         emptyDir:
           medium: Memory
-          sizeLimit: 15Gi
+          sizeLimit: 4Gi
       - name: ca
         secret:
           secretName: https-self-certs
