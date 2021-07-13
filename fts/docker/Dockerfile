@@ -10,7 +10,7 @@ RUN yum clean all
 
 COPY certs/hostcert_fts.pem /etc/grid-security/hostcert.pem
 COPY certs/hostcert_fts.key.pem /etc/grid-security/hostkey.pem
-COPY certs/rucio_ca.pem /etc/grid-security/certificates/5fca1cb1.0
+COPY certs/rucio_ca.pem /etc/grid-security/certificates/rucio_ca.pem
 RUN chmod 400 /etc/grid-security/hostkey.pem
 
 COPY fts3rest.conf /etc/httpd/conf.d/fts3rest.conf
