@@ -22,5 +22,5 @@ RUN echo "" > /etc/httpd/conf.d/ssl.conf &&\
     echo "" > /etc/httpd/conf.d/zgridsite.conf
 
 COPY supervisord.conf /etc/
-
-CMD ['/usr/bin/supervisord', '-c', '/etc/supervisord.conf']
+COPY startup.sh /usr/local/sbin/
+CMD ["/usr/local/sbin/startup.sh"]
