@@ -2,6 +2,11 @@ resources:
   - deploy.yaml
   - db-deploy.yaml
 
+configMapGenerator:
+  - name: fts-conf
+    files:
+      - fts3config
+
 generatorOptions:
   disableNameSuffixHash: true
 

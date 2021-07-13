@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
       - name: fts
-        image: rucio/fts:latest
+        image: aaarora/fts-deploy:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 3306
@@ -33,7 +33,18 @@ spec:
           requests:
             cpu: 1
             memory: 2Gi
+        volumeMounts:
+        - name: fts-conf
+          mountPath: /etc/fts3/fts3config
+          subPath: fts3config
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
       terminationGracePeriodSeconds: 30
+      volumes:
+      - name: fts-conf
+        configMap:
+          name: fts-conf
+          items:
+          - key: fts3config
+            path: fts3config
