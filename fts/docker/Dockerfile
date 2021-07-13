@@ -21,4 +21,3 @@ RUN echo "" > /etc/httpd/conf.d/ssl.conf &&\
     echo "" > /etc/httpd/conf.d/zgridsite.conf
 
 ADD docker-entrypoint.sh /
-ENTRYPOINT ["/docker-entrypoint.sh"]
