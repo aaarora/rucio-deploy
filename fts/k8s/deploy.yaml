@@ -20,6 +20,7 @@ spec:
       labels:
         k8s-app: fts
     spec:
+      hostNetwork: true
       containers:
       - name: fts
         image: aaarora/fts-deploy:latest

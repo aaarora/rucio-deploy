@@ -1,6 +1,5 @@
 resources:
   - deploy.yaml
-  - db-deploy.yaml
 
 configMapGenerator:
   - name: fts-conf

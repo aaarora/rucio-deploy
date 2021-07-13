@@ -1,8 +1,12 @@
 #!/bin/bash
 
+# wait for MySQL readiness
+/usr/local/bin/wait-for-it.sh -h $DB_ADDR -p 3306 -t 3600
+
 # initialise / upgrade the database
 /usr/share/fts/fts-database-upgrade.py <<< y
 
+# fix Apache configuration
 /usr/bin/sed -i 's/Listen 80/#Listen 80/g' /etc/httpd/conf/httpd.conf
 
 # startup the FTS services
