@@ -3,7 +3,7 @@
 # make certs with right DNS
 openssl req -new -newkey rsa:2048 -nodes -keyout /etc/grid-security/hostkey.pem -subj "/CN=$OSG_FQDN" > /etc/grid-security/hostcert_fts.csr
 openssl x509 -req -days 9999 -CAcreateserial -extfile <(printf "subjectAltName=DNS:$OSG_FQDN,DNS:localhost") -in /etc/grid-security/hostcert_fts.csr -CA /etc/grid-security/certificates/rucio_ca.pem -CAkey /etc/grid-security/certificates/rucio_ca.key.pem -out /etc/grid-security/hostcert.pem -passin pass:123456
-mv /etc/grid-security/certificates/rucio_ca.pem /etc/grid-security/certificates/5fca1cb1.0
+cp /etc/grid-security/certificates/rucio_ca.pem /etc/grid-security/certificates/5fca1cb1.0
 chmod 400 /etc/grid-security/hostkey.pem
 
 # wait for MySQL readiness
