@@ -5,7 +5,7 @@ AuthorizedVO=*
 DbType=mysql
 DbUserName=fts
 DbPassword=fts
-DbConnectString=$DB_ADDR:3306/fts
+DbConnectString=192.168.25.81:3306/fts
 
 LogLevel=DEBUG
 
