@@ -9,8 +9,8 @@ RUN yum install -y mysql multitail gfal2-plugin* fts-server fts-client fts-rest 
 RUN yum clean all
 
 # Setup FTS security
-COPY certs/rucio_ca.key.pem /etc/grid-security/rucio_ca.key.pem
-COPY certs/rucio_ca.pem /etc/grid-security/rucio_ca.pem
+COPY certs/rucio_ca.key.pem /etc/grid-security/certificates/rucio_ca.key.pem
+COPY certs/rucio_ca.pem /etc/grid-security/certificates/rucio_ca.pem
 
 # Database configuration for FTS server
 RUN chmod +x /usr/share/fts/fts-database-upgrade.py
