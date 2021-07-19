@@ -48,7 +48,7 @@ RUN cp -r /tmp/rucio/etc . && \
     mkdir /var/log/rucio /var/log/rucio/trace && \
     chmod -R 777 /var/log/rucio
 
-COPY alembic.ini google-cloud-storage-test.json $RUCIOHOME/etc/
+COPY google-cloud-storage-test.json $RUCIOHOME/etc/
 
 # Add Certs here
 COPY certs/rucio_ca.key.pem /etc/grid-security/certificates/rucio_ca.key.pem
