@@ -5,6 +5,7 @@ configMapGenerator:
   - name: rucio-conf
     files:
       - rucio.cfg
+      - alembic.ini
   - name: rucio-misc-scripts
     files:
       - add-rse.sh

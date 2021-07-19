@@ -26,13 +26,11 @@ spec:
         imagePullPolicy: Always
         env:
         - name: POSTGRES_USER
-          value: postgres
+          value: rucio
         - name: POSTGRES_DB
-          value: postgres
+          value: rucio
         - name: POSTGRES_PASSWORD
           value: secret
-        - name: test
-          value: $(HOSTNAME)
         ports:
         - containerPort: 80
         resources:
