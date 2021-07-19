@@ -2,12 +2,12 @@ resources:
   - deploy.yaml
 
 configMapGenerator:
-  - name: fts-conf
+  - name: rucio-conf
     files:
-      - fts3config
+      - rucio.cfg
 
 generatorOptions:
   disableNameSuffixHash: true
 
 commonLabels:
-  k8s-app: fts
+  k8s-app: rucio

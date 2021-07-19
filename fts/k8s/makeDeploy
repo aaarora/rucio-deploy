@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cat <<EOF > deploy.yaml
+cat <<EOF > $(pwd)/fts/k8s/deploy.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -61,7 +61,7 @@ spec:
             path: fts3config
 EOF
 
-cat <<EOF > fts3config
+cat <<EOF > $(pwd)/fts/k8s/fts3config
 SiteName=DOCKER
 
 AuthorizedVO=*

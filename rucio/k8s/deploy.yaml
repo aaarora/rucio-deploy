@@ -2,13 +2,13 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    k8s-app: fts
-  name: fts
+    k8s-app: rucio
+  name: rucio
 spec:
   replicas: 1
   selector:
     matchLabels:
-      k8s-app: fts
+      k8s-app: rucio
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -18,22 +18,21 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        k8s-app: fts
+        k8s-app: rucio
     spec:
       containers:
-      - name: fts
-        image: aaarora/fts-deploy:latest
+      - name: rucio
+        image: aaarora/rucio-deploy:latest
         imagePullPolicy: Always
         env:
         - name: DB_ADDR
-          value: 192.168.59.184 
+          value: 192.168.25.94 
         - name: OSG_FQDN
           valueFrom:
             fieldRef:
               fieldPath: status.podIP
         ports:
-        - containerPort: 8446
-        - containerPort: 8449
+        - containerPort: 443
         resources:
           limits:
             cpu: 2
@@ -42,17 +41,17 @@ spec:
             cpu: 1
             memory: 2Gi
         volumeMounts:
-        - name: fts-conf
-          mountPath: /etc/fts3/fts3config
-          subPath: fts3config
+        - name: rucio-conf
+          mountPath: /opt/rucio/etc/rucio.cfg
+          subPath: rucio.cfg
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
       terminationGracePeriodSeconds: 30
       volumes:
-      - name: fts-conf
+      - name: rucio-conf
         configMap:
-          name: fts-conf
+          name: rucio-conf
           items:
-          - key: fts3config
-            path: fts3config
+          - key: rucio.cfg
+            path: rucio.cfg
