@@ -22,7 +22,7 @@ WORKDIR $RUCIOHOME
 RUN mkdir -p \
       bin \
       etc \
-      lib/rucio \
+      lib \
       tools
 
 RUN python3 -m pip install --no-cache --upgrade pip && \
@@ -44,7 +44,7 @@ COPY pylintrc etc/pylintrc
 RUN cp -r /tmp/rucio/etc . && \
     cp -r /tmp/rucio/tools . && \
     cp -r /tmp/rucio/bin . && \
-    cp -r /tmp/rucio/lib/rucio . && \
+    cp -r /tmp/rucio/lib/ . && \
     mkdir /var/log/rucio /var/log/rucio/trace && \
     chmod -R 777 /var/log/rucio
 
