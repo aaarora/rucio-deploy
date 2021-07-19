@@ -16,7 +16,7 @@ RUN yum -y install epel-release && \
 RUN git clone https://github.com/rucio/rucio.git /tmp/rucio && rm -rf /tmp/rucio/.git
 
 ENV RUCIOHOME=/opt/rucio
-RUN mkdir -p $RUCIOHOME && \
+RUN mkdir -p $RUCIOHOME
 
 WORKDIR $RUCIOHOME
 RUN mkdir -p \
