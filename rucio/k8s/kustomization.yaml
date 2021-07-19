@@ -5,6 +5,9 @@ configMapGenerator:
   - name: rucio-conf
     files:
       - rucio.cfg
+  - name: rucio-misc-scripts
+    files:
+      - add-rse.sh
 
 generatorOptions:
   disableNameSuffixHash: true

@@ -30,6 +30,8 @@ spec:
         env:
         - name: DB_ADDR
           value: $(kubectl get pods -l k8s-app=postgres -o jsonpath="{.items[0].status.podIP}") 
+        - name: FTS_ADDR
+          value: $(kubectl get pods -l k8s-app=fts -o jsonpath="{.items[0].status.podIP}") 
         - name: OSG_FQDN
           valueFrom:
             fieldRef:
@@ -66,20 +68,20 @@ loglevel = DEBUG
 mailtemplatedir=/opt/rucio/etc/mail_templates
 
 [client]
-rucio_host = https://$OSG_FQDN:443
-auth_host = https://$OSG_FQDN:443
+rucio_host = https://\$OSG_FQDN:443
+auth_host = https://\$OSG_FQDN:443
 auth_type = userpass
 username = ddmlab
 password = secret
 ca_cert = /etc/grid-security/certificates/5fca1cb1.0
 client_cert = /opt/rucio/etc/usercert.pem
 client_key = /opt/rucio/etc/userkey.pem
-client_x509_proxy = $X509_USER_PROXY
+client_x509_proxy = \$X509_USER_PROXY
 account = root
 request_retries = 3
 
 [database]
-default = postgresql://$OSG_FQDN:secret@$(kubectl get pods -l k8s-app=postgres -o jsonpath="{.items[0].status.podIP}")/rucio
+default = postgresql://\$OSG_FQDN:secret@\$DB_ADDR/rucio
 schema = dev
 echo=0
 pool_recycle=3600
@@ -109,7 +111,7 @@ scheme = https,davs,gsiftp,root,srm
 #hostcert = /etc/grid-security/hostcert.pem
 #hostkey = /etc/grid-security/hostkey.pem
 transfertool = fts3
-ftshosts = https://$(kubectl get pods -l k8s-app=fts -o jsonpath="{.items[0].status.podIP}"):8446
+ftshosts = https://\$FTS_ADDR:8446
 cacert = /etc/grid-security/certificates/5fca1cb1.0
 usercert = /opt/rucio/etc/usercertkey.pem
 
