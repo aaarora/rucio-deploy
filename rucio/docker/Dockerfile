@@ -43,6 +43,8 @@ COPY .flake8 .flake8
 COPY pylintrc etc/pylintrc
 RUN cp -r /tmp/rucio/etc . && \
     cp -r /tmp/rucio/tools . && \
+    cp -r /tmp/rucio/bin . && \
+    cp -r /tmp/rucio/lib/rucio . && \
     mkdir /var/log/rucio /var/log/rucio/trace && \
     chmod -R 777 /var/log/rucio
 
