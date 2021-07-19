@@ -25,14 +25,12 @@ spec:
         - name: OSG_FQDN
           valueFrom:
             fieldRef:
-              #fieldPath: status.podIP
-              fieldPath: spec.nodeName
+              fieldPath: status.podIP
         image: aaarora/gc-500gbps:latest
         imagePullPolicy: Always
         name: xrootd-server
         ports:
         - containerPort: 1094
-          hostPort: 1094
         resources:
           limits:
             cpu: 100

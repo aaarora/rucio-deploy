@@ -5,13 +5,13 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    k8s-app: fts
-  name: fts
+    k8s-app: rucio
+  name: rucio
 spec:
   replicas: 1
   selector:
     matchLabels:
-      k8s-app: fts
+      k8s-app: rucio
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -21,15 +21,15 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        k8s-app: fts
+        k8s-app: rucio
     spec:
       containers:
-      - name: fts
-        image: aaarora/fts-deploy:latest
+      - name: rucio
+        image: aaarora/rucio-deploy:latest
         imagePullPolicy: Always
         env:
         - name: DB_ADDR
-          value: $(kubectl get pods -l k8s-app=mysql -o jsonpath="{.items[0].status.podIP}") 
+          value: $(kubectl get pods -l k8s-app=postgres -o jsonpath="{.items[0].status.podIP}") 
         - name: OSG_FQDN
           valueFrom:
             fieldRef:
@@ -45,37 +45,18 @@ spec:
             cpu: 1
             memory: 2Gi
         volumeMounts:
-        - name: fts-conf
-          mountPath: /etc/fts3/fts3config
-          subPath: fts3config
+        - name: rucio-conf
+          mountPath: /etc/rucio3/rucio3config
+          subPath: rucio3config
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
       terminationGracePeriodSeconds: 30
       volumes:
-      - name: fts-conf
+      - name: rucio-conf
         configMap:
-          name: fts-conf
+          name: rucio-conf
           items:
-          - key: fts3config
-            path: fts3config
-EOF
-
-cat <<EOF > fts3config
-SiteName=DOCKER
-
-AuthorizedVO=*
-
-DbType=mysql
-DbUserName=fts
-DbPassword=fts
-DbConnectString=$(kubectl get pods -l k8s-app=mysql -o jsonpath="{.items[0].status.podIP}"):3306/fts
-
-LogLevel=DEBUG
-
-MinRequiredFreeRAM = 16
-MaxUrlCopyProcesses = 4
-
-[roles]
-Public = all:transfer;all:config;all:datamanagement
+          - key: rucio3config
+            path: rucio3config
 EOF

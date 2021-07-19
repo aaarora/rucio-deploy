@@ -1,0 +1,13 @@
+resources:
+  - deploy.yaml
+
+configMapGenerator:
+  - name: fts-conf
+    files:
+      - fts3config
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+commonLabels:
+  k8s-app: fts

@@ -2,13 +2,13 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    k8s-app: fts
-  name: fts
+    k8s-app: mysql
+  name: mysql
 spec:
   replicas: 1
   selector:
     matchLabels:
-      k8s-app: fts
+      k8s-app: mysql
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -18,22 +18,23 @@ spec:
     metadata:
       creationTimestamp: null
       labels:
-        k8s-app: fts
+        k8s-app: mysql
     spec:
       containers:
-      - name: fts
-        image: aaarora/fts-deploy:latest
+      - name: mysql
+        image: mysql:5
         imagePullPolicy: Always
         env:
-        - name: DB_ADDR
-          value: 192.168.25.83 
-        - name: OSG_FQDN
-          valueFrom:
-            fieldRef:
-              fieldPath: status.podIP
+        - name: MYSQL_USER
+          value: fts
+        - name: MYSQL_DATABASE
+          value: fts
+        - name: MYSQL_PASSWORD
+          value: fts
+        - name: MYSQL_ROOT_PASSWORD
+          value: fts
         ports:
-        - containerPort: 8446
-        - containerPort: 8449
+        - containerPort: 80
         resources:
           limits:
             cpu: 2
@@ -41,18 +42,7 @@ spec:
           requests:
             cpu: 1
             memory: 2Gi
-        volumeMounts:
-        - name: fts-conf
-          mountPath: /etc/fts3/fts3config
-          subPath: fts3config
       dnsPolicy: ClusterFirst
       restartPolicy: Always
       schedulerName: default-scheduler
       terminationGracePeriodSeconds: 30
-      volumes:
-      - name: fts-conf
-        configMap:
-          name: fts-conf
-          items:
-          - key: fts3config
-            path: fts3config
