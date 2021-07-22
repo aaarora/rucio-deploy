@@ -3,7 +3,7 @@
 # make certs
 # user certs
 openssl req -new -newkey rsa:2048 -nodes -keyout $RUCIOHOME/etc/userkey.pem -subj "/CN=Rucio User" > $RUCIOHOME/etc/ruciouser.csr
-openssl x509 -req -days 9999 -CAcreateserial -extfile <(printf "keyUsage=critical") -in $RUCIOHOME/etc/ruciouser.csr -CA /etc/grid-security/rucio_ca.pem -CAkey /etc/grid-security/rucio_ca.key.pem -out $RUCIOHOME/etc/usercert.pem
+openssl x509 -req -days 9999 -CAcreateserial -extfile <(printf "keyUsage=critical") -in $RUCIOHOME/etc/ruciouser.csr -CA /etc/grid-security/certificates/rucio_ca.pem -CAkey /etc/grid-security/certificates/rucio_ca.key.pem -out $RUCIOHOME/etc/usercert.pem
 cp $RUCIOHOME/etc/usercert.pem  $RUCIOHOME/etc/usercertkey.pem
 cat $RUCIOHOME/etc/userkey.pem >> $RUCIOHOME/etc/usercertkey.pem
 
