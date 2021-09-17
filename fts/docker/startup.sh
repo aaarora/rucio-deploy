@@ -3,7 +3,7 @@
 # make certs with right DNS
 openssl req -new -newkey rsa:2048 -nodes -keyout /etc/grid-security/hostkey.pem -subj "/CN=$OSG_FQDN" > /etc/grid-security/hostcert_fts.csr
 openssl x509 -req -days 9999 -CAcreateserial -extfile <(printf "subjectAltName=IP:$OSG_FQDN,DNS:localhost") -in /etc/grid-security/hostcert_fts.csr -CA /etc/grid-security/certificates/rucio_ca.pem -CAkey /etc/grid-security/certificates/rucio_ca.key.pem -out /etc/grid-security/hostcert.pem -passin pass:123456
-cp /etc/grid-security/certificates/rucio_ca.pem /etc/grid-security/certificates/5fca1cb1.0
+cp /etc/grid-security/certificates/rucio_ca.pem /etc/grid-security/certificates/hostca.crt
 chmod 400 /etc/grid-security/hostkey.pem
 
 # wait for MySQL readiness
@@ -17,4 +17,6 @@ chmod 400 /etc/grid-security/hostkey.pem
 
 # startup the FTS services
 /usr/sbin/fts_server               # main FTS server daemonizes
+/usr/sbin/fts_msg_bulk             # daemon to send messages to activemq
+/usr/sbin/fts_bringonline          # daemon to handle staging requests
 /usr/sbin/httpd -DFOREGROUND       # FTS REST frontend & FTSMON
