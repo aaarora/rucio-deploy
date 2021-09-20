@@ -5,12 +5,14 @@ RUN yum install -y epel-release.noarch
 RUN curl https://fts-repo.web.cern.ch/fts-repo/fts3-prod-el7.repo > /etc/yum.repos.d/fts3-prod-el7.repo
 RUN curl https://dmc-repo.web.cern.ch/dmc-repo/dmc-el7.repo > /etc/yum.repos.d/dmc-el7.repo
 RUN yum upgrade -y
-RUN yum install -y mysql multitail gfal2-plugin* fts-server fts-client fts-rest fts-monitoring fts-mysql fts-msg
+RUN yum install -y git mysql multitail gfal2-plugin* fts-server fts-client fts-rest fts-monitoring fts-mysql fts-msg
 RUN yum clean all
 
 # Setup FTS security
-COPY certs/rucio_ca.key.pem /etc/grid-security/certificates/rucio_ca.key.pem
-COPY certs/rucio_ca.pem /etc/grid-security/certificates/rucio_ca.pem
+RUN curl -O http://uaf-10.t2.ucsd.edu/~aaarora/packages/osg-ca-generator-1.5.0.tar.gz && \
+    tar -xvf osg-ca-generator-1.5.0.tar.gz && \
+    cd osg-ca-generator-1.5.0 && \
+    make install
 
 # Database configuration for FTS server
 RUN chmod +x /usr/share/fts/fts-database-upgrade.py
