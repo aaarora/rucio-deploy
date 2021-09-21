@@ -12,7 +12,8 @@ RUN yum clean all
 RUN curl -O http://uaf-10.t2.ucsd.edu/~aaarora/packages/osg-ca-generator-1.5.0.tar.gz && \
     tar -xvf osg-ca-generator-1.5.0.tar.gz && \
     cd osg-ca-generator-1.5.0 && \
-    make install
+    make install && \
+    ln -s /usr/local/bin/python3.8 /usr/bin/python3
 
 # Database configuration for FTS server
 RUN chmod +x /usr/share/fts/fts-database-upgrade.py
